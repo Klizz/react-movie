@@ -1,0 +1,13 @@
+.nav-wrapper {
+    background-color: #000;
+}
+
+.row {
+    height: 200px;
+}
+
+.box {
+    border: 2px solid black;
+    padding: 10px;
+    width: 50%;
+}
