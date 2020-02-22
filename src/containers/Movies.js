@@ -13,19 +13,13 @@ const API_KEY = '0d59c137d4b1775154cc094577fbe290';
 
 
 class MovieContainer extends Component {
-  state = {
-    movie: {
-      poster: "",
-      title: "",
-      overview: "",
-      rating: "",
-      director: "",
-      time: "",
-      budget: "",
-      revenue: ""
-    },
-    movieInfo: API_URL
-  };
+  constructor() {
+      super();
+      console.log("hola");
+      this.state = {
+        movie: API_URL
+      };
+  }
 
   componentDidMount() {
     const url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
@@ -33,24 +27,18 @@ class MovieContainer extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
-          movie: {
-            poster: "",
-            title: data.results[0].title,
-            overview: data.results[0].overview,
-            rating: data.results[0].vote_average,
-            director: data.results[0].directors,
-            time: data.results[0].time,
-            budget: data.results[0].budget,
-            revenue: data.results[0].revenue
-          }
+          movie: data.results[0]
         });
       });
   }
 
   render() {
+   /* const movieList = this.state.movie.map(movie => (
+        <MovieCard info={movie} key={movie.id} />
+    )); */
+    
     return (
       <div>
-        <h3>aqui va la data</h3>
         <MovieCard 
         name={this.state.movie.title}
         overview={this.state.movie.overview}

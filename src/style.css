@@ -2,8 +2,13 @@
     background-color: #000;
 }
 
-.row {
-    height: 200px;
+.col {
+    height: 100%;
+    margin-top: 15px;
+}
+
+.poster {
+  width: 100%;
 }
 
 .box {
@@ -11,3 +16,25 @@
     padding: 10px;
     width: 50%;
 }
+
+.hero {
+    height: 80vh;
+    display: flex;
+    padding-left: 30px;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin-bottom: 100px;
+  }
+  .hero-inner {
+    width: 60%;
+    margin-top: 45vh;
+  }
+  .main-line {
+    color: #fff;
+    font-size: 4em;
+  }
+  .secondary-line {
+    font-size: 1.3em;
+    color: #c3c6c8;
+  }
