@@ -17,26 +17,12 @@ class Home extends Component {
     heroImage: null,
     currentPage: 0,
     loadedPages: 0,
-    search: ""
   };
 
   componentDidMount() {
     const url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
     this.fetchMovies(url);
   }
-
-  loadMoreMovies = () => {
-    let url = "";
-    if (this.state.search === "") {
-      url = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this
-        .state.currentPage + 1}`;
-    } else {
-      url = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query${
-        this.state.search
-      }&page=${this.state.currentPage + 1}`;
-    }
-    this.fetchMovies(url);
-  };
 
   fetchMovies = (url) => {
     fetch(url)
@@ -50,6 +36,13 @@ class Home extends Component {
         });
       })
       .catch(error => console.log("Error", error));
+  };
+
+  loadMoreMovies = () => {
+    let url = "";
+    url = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage + 1}`
+    this.fetchMovies(url);
+    console.log("hiciste click");
   };
 
   render() {
@@ -76,7 +69,10 @@ class Home extends Component {
           );
         })}
         </div>
-        <LoadMore />
+        {(this.state.currentPage <= this.state.loadedPages) ?
+        <LoadMore
+        onClick={this.loadMoreMovies}
+         /> : null }
         </div>
       </div>
     );

@@ -1,9 +1,14 @@
 import React from 'react';
 
-const LoadMore = () => {
+const LoadMore = (props) => {
     return(
-        <div>
-            Load more
+        <div className="center-align">
+            <button 
+            className="waves-effect waves-light btn-large load"
+            onClick={props.onClick}
+            >
+            Load more movies
+            </button>
         </div>
     );
 }
