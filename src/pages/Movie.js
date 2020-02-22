@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import MovieInfo from "../components/MovieInfo";
+import Actors from "../components/Actors";
 
 //Api URL
 const API_URL = "https://api.themoviedb.org/3/";
 //Api Key
 const API_KEY = "0d59c137d4b1775154cc094577fbe290";
 //Images URL
-
 
 class Movie extends Component {
   state = {
@@ -50,17 +50,28 @@ class Movie extends Component {
   render() {
     return (
       <div>
-        {this.state.movie ? 
-        <MovieInfo
-        image={this.state.movie}
-        movie={this.state.movie}
-        overview={this.state.movie}
-        value={this.state.vote_average}
-        directors={this.state.directors}
-        time={this.state.movie}
-        budget={this.state.budget}
-        revenue={this.state.revenue}
-        /> : null}
+        {this.state.movie ? (
+          <MovieInfo
+            image={this.state.movie}
+            movie={this.state.movie}
+            overview={this.state.movie}
+            value={this.state.vote_average}
+            directors={this.state.directors}
+            time={this.state.movie}
+            budget={this.state.budget}
+            revenue={this.state.revenue}
+          />
+        ) : null}
+        {this.state.actors ? (
+          <div className="container">
+            <h2>Actors</h2>
+            <div className="row">
+              {this.state.actors.map((actor, i) => {
+                return <Actors key={i} actor={actor} />
+              })}
+            </div>
+          </div>
+        ) : null}
       </div>
     );
   }

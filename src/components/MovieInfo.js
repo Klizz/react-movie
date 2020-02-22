@@ -23,8 +23,8 @@ const MovieInfo = props => {
         backgroundImage: `url('${IMAGE_BASE_URL}w500${props.movie.backdrop_path}')`
     }}
     >
-        <div className="movie-container movie-info">
-      <div className="row">
+        <div className=" movie-info">
+      <div className="row movie-container">
         <div className="col s4">
           <img className="poster" src={`${IMAGE_BASE_URL}w500${props.movie.poster_path}`}alt="?" />
         </div>

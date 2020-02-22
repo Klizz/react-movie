@@ -24,6 +24,12 @@ class Home extends Component {
     this.fetchMovies(url);
   }
 
+  loadMoreMovies = () => {
+    let url = "";
+    url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage + 1}`
+    this.fetchMovies(url);
+  };
+
   fetchMovies = (url) => {
     fetch(url)
       .then(data => data.json())
@@ -38,15 +44,8 @@ class Home extends Component {
       .catch(error => console.log("Error", error));
   };
 
-  loadMoreMovies = () => {
-    let url = "";
-    url = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage + 1}`
-    this.fetchMovies(url);
-    console.log("hiciste click");
-  };
 
   render() {
-    console.log(this.state.movie.title)
     return (
       <div>
         {this.state.heroImage ?
@@ -57,7 +56,16 @@ class Home extends Component {
             overview={this.state.heroImage.overview}
             />
             </div> :null }
-        <div className="container" >
+            
+        <div className="container">
+        
+        <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Buscar" id="first_name" type="text" class="validate" autoComplete="off" />
+          <label for="first_name"></label>
+        </div>
+        </div>
+
         <div className="row">
         {this.state.movie.map((movie, i) => {
           return(

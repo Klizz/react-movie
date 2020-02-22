@@ -7,6 +7,10 @@
     margin-top: 15px;
 }
 
+.actor {
+  height: 300px;
+}
+
 .load {
   margin-top: 50px;
   margin-bottom: 100px;
@@ -25,6 +29,10 @@
   width: 80%;
 }
 
+.card-image {
+  height: 450px;
+}
+
 .tag {
   font-weight: bold;
   text-transform: uppercase;
@@ -32,7 +40,7 @@
 
 .movie-info {
   padding: 10px;
-  height: 95vh;
+  height: 800px;
 }
 
 .poster {
