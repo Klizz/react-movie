@@ -73,6 +73,7 @@ class Home extends Component {
             key={i}
             linkID={`/movie/${movie.id}`}
             poster={`${IMAGE_BASE_URL}w500${movie.poster_path}`}
+            title={movie.title}
             />
           );
         })}
