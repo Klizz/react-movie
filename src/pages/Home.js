@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Hero from "../components/Hero";
 import MovieCard from "../components/MovieCard";
 import LoadMore from "../components/LoadMore";
+import SearchBar from "../components/SearchBar";
 
 //Api URL
 const API_URL = "https://api.themoviedb.org/3";
@@ -17,12 +18,29 @@ class Home extends Component {
     heroImage: null,
     currentPage: 0,
     loadedPages: 0,
+    searchTerm: ''
   };
 
   componentDidMount() {
     const url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
     this.fetchMovies(url);
   }
+
+  searchItems = (searchTerm) => {
+    let url = '';
+    this.setState({
+      movies: [],
+      searchTerm
+    })
+    if (searchTerm === '') {
+      url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+    } else {
+      url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&query${searchTerm}`;
+    }
+    this.fetchMovies(url);
+  }
+
+  
 
   loadMoreMovies = () => {
     let url = "";
@@ -58,14 +76,7 @@ class Home extends Component {
             </div> :null }
             
         <div className="container">
-        
-        <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Buscar" id="first_name" type="text" class="validate" autoComplete="off" />
-          <label for="first_name"></label>
-        </div>
-        </div>
-
+          <SearchBar callback={this.searchItems} />
         <div className="row">
         {this.state.movie.map((movie, i) => {
           return(
