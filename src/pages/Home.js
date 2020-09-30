@@ -16,14 +16,15 @@ const IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
 class Home extends Component {
   state = {
     movie: [],
+    loading: false,
     heroImage: null,
     currentPage: 0,
     loadedPages: 0,
-    searchTerm: '',
-    loading: false
+    searchTerm: ''
   };
 
   componentDidMount() {
+    this.setState({ loading: true })
     const url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
     this.fetchMovies(url);
   }
@@ -32,22 +33,26 @@ class Home extends Component {
     let url = '';
     this.setState({
       movies: [],
+      loading: true,
       searchTerm
     })
     if (searchTerm === '') {
       url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
     } else {
-      url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&query${searchTerm}`;
+      url = `${API_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`
     }
     this.fetchMovies(url);
   }
 
-  
-
   loadMoreMovies = () => {
-    this.setState({ loading: true })
     let url = "";
-    url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage + 1}`
+    this.setState({ loading: true })
+
+    if(this.state.searchTerm === '') {
+      url = `${API_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage + 1}`
+    } else {
+      url = `${API_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${this.state.searchTerm}&page=1`
+    }
     this.fetchMovies(url);
   };
 
