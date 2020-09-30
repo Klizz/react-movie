@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MovieInfo from "../components/MovieInfo";
 import Actors from "../components/Actors";
+import ClipLoader from "react-spinners/ClipLoader";
 
 //Api URL
 const API_URL = "https://api.themoviedb.org/3/";
@@ -12,10 +13,12 @@ class Movie extends Component {
   state = {
     movie: null,
     actors: null,
-    directors: []
+    directors: [],
+    loading: false
   };
 
   componentDidMount() {
+    this.setState({ loading: true })
     const url = `${API_URL}movie/${this.props.match.params.id}?api_key=${API_KEY}&language=en-US`;
     this.fetchMovie(url);
   }
@@ -24,25 +27,26 @@ class Movie extends Component {
     fetch(url)
       .then(data => data.json())
       .then(data => {
-        this.setState(
-          {
-            movie: data
-          },
-          () => {
-            const crew = `${API_URL}movie/${this.props.match.params.id}/credits?api_key=${API_KEY}&language=en-US`;
-            fetch(crew)
-              .then(data => data.json())
-              .then(data => {
-                const directors = data.crew.filter(
-                  member => member.job === "Director"
-                );
-                this.setState({
-                  actors: data.cast,
-                  directors
+        if (data.status_code){
+          this.setState({ loading: false })
+        } else {
+          this.setState({ movie: data }, () => {
+              const crew = `${API_URL}movie/${this.props.match.params.id}/credits?api_key=${API_KEY}&language=en-US`;
+              fetch(crew)
+                .then(data => data.json())
+                .then(data => {
+                  const directors = data.crew.filter(
+                    member => member.job === "Director"
+                  );
+                  this.setState({
+                    actors: data.cast,
+                    directors,
+                    loading: false
+                  });
                 });
-              });
-          }
-        );
+            }
+          );
+        }
       })
       .catch(error => console.error("Error: ", error));
   };
@@ -50,7 +54,7 @@ class Movie extends Component {
   render() {
     return (
       <div>
-        {this.state.movie ? (
+        {this.state.movie ? 
           <MovieInfo
             image={this.state.movie}
             movie={this.state.movie}
@@ -61,8 +65,8 @@ class Movie extends Component {
             budget={this.state.budget}
             revenue={this.state.revenue}
           />
-        ) : null}
-        {this.state.actors ? (
+         : null}
+        {this.state.actors ? 
           <div className="container">
             <h2>Actors</h2>
             <div className="row">
@@ -71,7 +75,9 @@ class Movie extends Component {
               })}
             </div>
           </div>
-        ) : null}
+         : null}
+         { !this.state.actors && !this.state.loading ? <h1>Not found</h1> : null }
+         { this.state.loading ? <div className="center"><ClipLoader size={100} /></div> : null }
       </div>
     );
   }
