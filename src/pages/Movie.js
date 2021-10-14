@@ -1,86 +1,66 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import MovieInfo from "../components/MovieInfo";
 import Actors from "../components/Actors";
 import ClipLoader from "react-spinners/ClipLoader";
 
-//Api URL
-const API_URL = "https://api.themoviedb.org/3/";
-//Api Key
-const API_KEY = "0d59c137d4b1775154cc094577fbe290";
-//Images URL
+function Movie() {
+  //Api URL
+  const API_URL = "https://api.themoviedb.org/3/";
+  //Api Key
+  const API_KEY = "0d59c137d4b1775154cc094577fbe290";
 
-class Movie extends Component {
-  state = {
-    movie: null,
-    actors: null,
-    directors: [],
-    loading: false
-  };
+  const [movie, setMovie] = useState();
+  const [crew, setCrew] = useState();
 
-  componentDidMount() {
-    this.setState({ loading: true })
-    const url = `${API_URL}movie/${this.props.match.params.id}?api_key=${API_KEY}&language=en-US`;
-    this.fetchMovie(url);
-  }
-
-  fetchMovie = url => {
+  useEffect(() => {
+    let movieID = window.location.href;
+    const currentMovie = movieID.split("/").pop();
+    const url = `${API_URL}movie/${parseInt(
+      currentMovie
+    )}?api_key=${API_KEY}&language=en-US`;
     fetch(url)
-      .then(data => data.json())
-      .then(data => {
-        if (data.status_code){
-          this.setState({ loading: false })
-        } else {
-          this.setState({ movie: data }, () => {
-              const crew = `${API_URL}movie/${this.props.match.params.id}/credits?api_key=${API_KEY}&language=en-US`;
-              fetch(crew)
-                .then(data => data.json())
-                .then(data => {
-                  const directors = data.crew.filter(
-                    member => member.job === "Director"
-                  );
-                  this.setState({
-                    actors: data.cast,
-                    directors,
-                    loading: false
-                  });
-                });
-            }
-          );
-        }
-      })
-      .catch(error => console.error("Error: ", error));
-  };
+      .then((response) => response.json())
+      .then((data) => setMovie(data))
+      .catch((error) => console.log("Error", error));
+  }, []);
 
-  render() {
-    return (
-      <div>
-        {this.state.movie ? 
-          <MovieInfo
-            image={this.state.movie}
-            movie={this.state.movie}
-            overview={this.state.movie}
-            value={this.state.vote_average}
-            directors={this.state.directors}
-            time={this.state.movie}
-            budget={this.state.budget}
-            revenue={this.state.revenue}
-          />
-         : null}
-        {this.state.actors ? 
-          <div className="container">
-            <h2>Actors</h2>
-            <div className="row">
-              {this.state.actors.map((actor, i) => {
-                return <Actors key={i} actor={actor} />
-              })}
-            </div>
-          </div>
-         : null}
-         { !this.state.actors && !this.state.loading ? <h1>Not found</h1> : null }
-         { this.state.loading ? <div className="center"><ClipLoader size={100} /></div> : null }
+  useEffect(() => {
+    let movieID = window.location.href;
+    const currentMovie = movieID.split("/").pop();
+    const url = `${API_URL}movie/${parseInt(currentMovie)}/credits?api_key=${API_KEY}&language=en-US`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => setCrew(data))
+      .catch((error) => console.log("Error", error));
+  }, []);
+
+  return(
+    <div>
+    {movie && crew ? 
+      <MovieInfo
+        background={movie.backdrop_path}
+        poster={movie.poster_path}
+        title={movie.title}
+        rating={movie.vote_average}
+        overview={movie.overview}
+        directors={crew.crew.filter(i => i.job === "Director")}
+        runtime={movie.runtime}
+        budget={movie.budget}
+        revenue={movie.revenue}
+      />
+     : <ClipLoader />}
+    {crew ? 
+      <div className="container">
+        <h2 style={{ margin: '40px', textAlign: 'center', fontSize: '3em'}}>Actors</h2>
+        <div className="row">
+          {crew.cast.map((actor, i) => {
+            return <Actors key={i} actor={actor} />
+          })}
+        </div>
       </div>
-    );
-  }
+     : <ClipLoader />}
+  </div>
+  );
 }
 
 export default Movie;

@@ -17,13 +17,13 @@ class SearchBar extends Component  {
 
     render(){
         return (
-            <div class="row">
-            <div class="input-field col s12">
+            <div className="row">
+            <div className="input-field col s12">
               <input 
               placeholder="Buscar" 
               id="first_name" 
               type="text" 
-              class="validate" 
+              className="validate" 
               onChange={this.doSearch}
               value={this.state.value}
                />

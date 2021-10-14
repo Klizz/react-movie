@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
+import Random from "./pages/Random";
 import NotFound from "./pages/NotFound";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./style.css";
@@ -15,6 +16,7 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/movie/:id" component={Movie} />
+            <Route path="/random" component={Random} />
             <Route path="" component={NotFound} />
           </Switch>
         </Router>
